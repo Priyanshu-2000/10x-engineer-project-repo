@@ -59,14 +59,8 @@ class TestPrompts:
         assert data["id"] == prompt_id
     
     def test_get_prompt_not_found(self, client: TestClient):
-        """Test that getting a non-existent prompt returns 404.
-        
-        NOTE: This test currently FAILS due to Bug #1!
-        The API returns 500 instead of 404.
-        """
         response = client.get("/prompts/nonexistent-id")
-        # This should be 404, but there's a bug...
-        assert response.status_code == 404  # Will fail until bug is fixed
+        assert response.status_code == 404
     
     def test_delete_prompt(self, client: TestClient, sample_prompt_data):
         # Create a prompt first
@@ -102,10 +96,28 @@ class TestPrompts:
         assert response.status_code == 200
         data = response.json()
         assert data["title"] == "Updated Title"
+        assert data["updated_at"] != original_updated_at
+
+    def test_partial_update_prompt(self, client: TestClient, sample_prompt_data):
+        # Create a prompt first
+        create_response = client.post("/prompts", json=sample_prompt_data)
+        prompt_id = create_response.json()["id"]
+        original_updated_at = create_response.json()["updated_at"]
         
-        # NOTE: This assertion will fail due to Bug #2!
-        # The updated_at should be different from original
-        # assert data["updated_at"] != original_updated_at  # Uncomment after fix
+        # Partially update the prompt
+        partial_update_data = {
+            "title": "Partially Updated Title"
+        }
+        
+        import time
+        time.sleep(0.1)  # Small delay to ensure timestamp would change
+        
+        response = client.patch(f"/prompts/{prompt_id}", json=partial_update_data)
+        assert response.status_code == 200
+        data = response.json()
+        assert data["title"] == "Partially Updated Title"
+        assert data["updated_at"] != original_updated_at
+        assert data["content"] == sample_prompt_data["content"]  # Content should remain unchanged
     
     def test_sorting_order(self, client: TestClient):
         """Test that prompts are sorted newest first.
@@ -152,12 +164,6 @@ class TestCollections:
         assert response.status_code == 404
     
     def test_delete_collection_with_prompts(self, client: TestClient, sample_collection_data, sample_prompt_data):
-        """Test deleting a collection that has prompts.
-        
-        NOTE: Bug #4 - prompts become orphaned after collection deletion.
-        This test documents the current (buggy) behavior.
-        After fixing, update the test to verify correct behavior.
-        """
         # Create collection
         col_response = client.post("/collections", json=sample_collection_data)
         collection_id = col_response.json()["id"]
@@ -170,10 +176,10 @@ class TestCollections:
         # Delete collection
         client.delete(f"/collections/{collection_id}")
         
-        # The prompt still exists but has invalid collection_id
-        # This is Bug #4 - should be handled properly
+        # After deletion: the prompts should have their collection_id set to None or be removed
         prompts = client.get("/prompts").json()["prompts"]
         if prompts:
-            # Prompt exists with orphaned collection_id
-            assert prompts[0]["collection_id"] == collection_id
-            # After fix, collection_id should be None or prompt should be deleted
+            # Prompt should exist but without a valid collection_id
+            assert prompts[0]["collection_id"] is None
+
+
