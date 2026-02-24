@@ -1,0 +1,123 @@
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.11.13, pytest-7.4.4, pluggy-1.6.0
+rootdir: /workspaces/10x-engineer-project-repo
+plugins: cov-4.1.0, anyio-4.12.1
+collected 15 items
+
+backend/tests/test_api.py [31mF[0m[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                                [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m_________________________ TestHealth.test_health_check _________________________[0m
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_runtest_hook.<locals>.<lambda> at 0x7bc615580540>
+when = 'call'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: "Callable[[], TResult]",
+        when: "Literal['collect', 'setup', 'call', 'teardown']",
+        reraise: Optional[
+            Union[Type[BaseException], Tuple[Type[BaseException], ...]]
+        ] = None,
+    ) -> "CallInfo[TResult]":
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        start = timing.time()
+        precise_start = timing.perf_counter()
+        try:
+>           result: Optional[TResult] = func()
+
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/runner.py[0m:341: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/runner.py[0m:262: in <lambda>
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_hooks.py[0m:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_manager.py[0m:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:53: in run_old_style_hookwrapper
+    return result.get_result()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:38: in run_old_style_hookwrapper
+    res = yield
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:53: in run_old_style_hookwrapper
+    return result.get_result()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:38: in run_old_style_hookwrapper
+    res = yield
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:53: in run_old_style_hookwrapper
+    return result.get_result()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:38: in run_old_style_hookwrapper
+    res = yield
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:53: in run_old_style_hookwrapper
+    return result.get_result()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:38: in run_old_style_hookwrapper
+    res = yield
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:53: in run_old_style_hookwrapper
+    return result.get_result()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_callers.py[0m:38: in run_old_style_hookwrapper
+    res = yield
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/runner.py[0m:177: in pytest_runtest_call
+    raise e
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/runner.py[0m:169: in pytest_runtest_call
+    item.runtest()
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/python.py[0m:1792: in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_hooks.py[0m:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/pluggy/_manager.py[0m:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pyfuncitem = <Function test_health_check>
+
+    @hookimpl(trylast=True)
+    def pytest_pyfunc_call(pyfuncitem: "Function") -> Optional[object]:
+        testfunction = pyfuncitem.obj
+        if is_async_function(testfunction):
+            async_warn_and_skip(pyfuncitem.nodeid)
+        funcargs = pyfuncitem.funcargs
+        testargs = {arg: funcargs[arg] for arg in pyfuncitem._fixtureinfo.argnames}
+>       result = testfunction(**testargs)
+[1m[31mE       TypeError: TestHealth.test_health_check() takes 0 positional arguments but 1 was given[0m
+
+[1m[31m/home/vscode/.local/lib/python3.11/site-packages/_pytest/python.py[0m:194: TypeError
+[31m[1m_______________ TestHealth.test_health_check_service_unavailable _______________[0m
+
+monkeypatch = <tests.test_api.TestHealth object at 0x7bc615484250>
+
+    def test_health_check_service_unavailable(monkeypatch):
+        """
+        Test the /health endpoint to ensure it handles service unavailability.
+    
+        Simulate a situation where the service is unavailable.
+        """
+        # Monkeypatch or simulate a scenario where the health response is not reachable
+        def mock_health_response():
+            raise Exception("Service Unavailable")
+    
+>       monkeypatch.setattr(app, "health_check", mock_health_response)
+[1m[31mE       AttributeError: 'TestHealth' object has no attribute 'setattr'[0m
+
+[1m[31mbackend/tests/test_api.py[0m:38: AttributeError
+[33m=============================== warnings summary ===============================[0m
+../../home/vscode/.local/lib/python3.11/site-packages/pydantic/_internal/_config.py:271
+../../home/vscode/.local/lib/python3.11/site-packages/pydantic/_internal/_config.py:271
+  /home/vscode/.local/lib/python3.11/site-packages/pydantic/_internal/_config.py:271: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.5/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m backend/tests/test_api.py::[1mTestHealth::test_health_check[0m - TypeError: TestHealth.test_health_check() takes 0 positional arguments but ...
+[31mFAILED[0m backend/tests/test_api.py::[1mTestHealth::test_health_check_service_unavailable[0m - AttributeError: 'TestHealth' object has no attribute 'setattr'
+[31m=================== [31m[1m2 failed[0m, [32m13 passed[0m, [33m2 warnings[0m[31m in 1.17s[0m[31m ===================[0m

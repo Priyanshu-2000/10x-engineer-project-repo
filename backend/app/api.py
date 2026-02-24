@@ -2,16 +2,18 @@
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
+from typing import Optional, List
+
+from pydantic import BaseModel
 
 from app.models import (
     Prompt, PromptCreate, PromptUpdate,
     Collection, CollectionCreate,
-    PromptList, CollectionList, HealthResponse,
+    PromptList, CollectionList, HealthResponse, Version,
     get_current_time
 )
 from app.storage import storage
-from app.utils import sort_prompts_by_date, filter_prompts_by_collection, search_prompts
+from app.utils import enforce_version_limit, sort_prompts_by_date, filter_prompts_by_collection, search_prompts
 from app import __version__
 
 
@@ -234,6 +236,69 @@ def delete_prompt(prompt_id: str):
         raise HTTPException(status_code=404, detail="Prompt not found")
     return None
 
+class VersionCreateRequest(BaseModel):
+    content: str
+
+@app.post("/prompts/{prompt_id}/versions", response_model=Version)
+async def create_version(prompt_id: str, version_create: VersionCreateRequest) -> Version:
+    """
+    Endpoint to create a new version of a prompt.
+    """
+    prompt = storage.get_prompt(prompt_id)
+    if not prompt:
+        raise HTTPException(status_code=404, detail="Prompt not found.")
+    
+    # Create and store the new version
+    new_version = Version(prompt_id=prompt.id, content=version_create.content)
+    storage.save_version(new_version)
+
+    # Update the prompt's current version and save
+    prompt.current_version_id = new_version.version_id
+    storage.update_prompt(prompt_id, prompt)
+
+    version_limit = 5
+    versions = storage.get_prompt_versions(prompt_id)
+    if len(versions) > version_limit:
+        # Sort by creation date, removing older versions
+        versions.sort(key=lambda v: v.created_at)
+        versions_to_remove = len(versions) - version_limit
+        for version in versions[:versions_to_remove]:
+            storage.delete_version(version.version_id)
+    return new_version
+
+@app.get("/prompts/{prompt_id}/versions", response_model=List[Version])
+async def get_versions(prompt_id: str) -> List[Version]:
+    """
+    Endpoint to get all versions of a prompt.
+    """
+    prompt = storage.get_prompt(prompt_id)
+    if not prompt:
+        raise HTTPException(status_code=404, detail="Prompt not found.")
+
+    return storage.get_prompt_versions(prompt_id)
+
+@app.put("/prompts/{prompt_id}/versions/{version_id}/revert", response_model=Prompt)
+async def revert_version(prompt_id: str, version_id: str) -> Prompt:
+    """
+    Endpoint to revert to a specific version of a prompt.
+    """
+    prompt = storage.get_prompt(prompt_id)
+    if not prompt:
+        raise HTTPException(status_code=404, detail="Prompt not found.")
+
+    version_to_revert = storage.get_version(version_id)
+    if not version_to_revert or version_to_revert.prompt_id != prompt_id:
+        raise HTTPException(status_code=404, detail="Version not found or does not match prompt.")
+    
+    # Apply content from the version to revert
+    prompt.content = version_to_revert.content
+    prompt.current_version_id = version_to_revert.version_id
+    await storage.update_prompt(prompt_id, prompt)
+
+    # Enforce version management
+    enforce_version_limit(prompt_id, limit=5)
+
+    return prompt
 
 # ============== Collection Endpoints ==============
 
@@ -319,4 +384,6 @@ def delete_collection(collection_id: str):
     storage.disassociate_prompts_from_collection(collection_id)
     
     return None
+
+
 

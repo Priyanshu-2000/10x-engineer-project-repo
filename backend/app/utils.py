@@ -2,6 +2,7 @@
 
 from typing import List
 from app.models import Prompt
+from backend.app import storage
 
 
 def sort_prompts_by_date(prompts: List[Prompt], descending: bool = True) -> List[Prompt]:
@@ -118,4 +119,18 @@ def extract_variables(content: str) -> List[str]:
     import re
     pattern = r'\{\{(\w+)\}\}'
     return re.findall(pattern, content)
+
+def enforce_version_limit(prompt_id: str, limit: int) -> None:
+    """
+    Ensure that the number of versions for a prompt does not exceed a specified limit.
+
+    Args:
+        prompt_id (str): The identifier for the prompt.
+        limit (int): The maximum number of versions allowed.
+    """
+    versions = storage.get_prompt_versions(prompt_id)
+    if len(versions) > limit:
+        versions.sort(key=lambda v: v.created_at)
+        for version in versions[:-limit]:
+            storage.delete_version(version.version_id)
 

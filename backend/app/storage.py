@@ -5,13 +5,16 @@ In a production environment, this would be replaced with a database.
 """
 
 from typing import Dict, List, Optional
-from app.models import Prompt, Collection
+from app.models import Prompt, Collection, Version
 
 
 class Storage:
     def __init__(self):
         self._prompts: Dict[str, Prompt] = {}
         self._collections: Dict[str, Collection] = {}
+
+        # New dictionary to store versions; key: prompt_id, value: list of versions
+        self._versions: Dict[str, List[Version]] = {}
     
     # ============== Prompt Operations ==============
     
@@ -173,6 +176,67 @@ class Storage:
         """
         self._prompts.clear()
         self._collections.clear()
+    
+    # ============== Version Operations ==============
+
+    def delete_version(self, version_id: str) -> bool:
+        """
+        Delete a specific version from storage.
+
+        Args:
+            version_id (str): The unique identifier for the version to delete.
+
+        Returns:
+            bool: True if the version was successfully deleted, False otherwise.
+        """
+        for versions in self._versions.values():
+            for i, version in enumerate(versions):
+                if version.version_id == version_id:
+                    del versions[i]
+                    return True
+        return False
+    def save_version(self, version: Version) -> Version:
+        """
+        Save a new version of a prompt.
+
+        Args:
+            version (Version): A version object to store.
+
+        Returns:
+            Version: The stored version object.
+        """
+        if version.prompt_id not in self._versions:
+            self._versions[version.prompt_id] = []
+        self._versions[version.prompt_id].append(version)
+        return version
+
+    def get_prompt_versions(self, prompt_id: str) -> List[Version]:
+        """
+        Retrieve all versions of a given prompt.
+
+        Args:
+            prompt_id (str): The unique identifier of the prompt.
+
+        Returns:
+            List[Version]: A list of version objects for the specified prompt.
+        """
+        return self._versions.get(prompt_id, [])
+
+    def get_version(self, version_id: str) -> Optional[Version]:
+        """
+        Retrieve a specific version using its ID.
+
+        Args:
+            version_id (str): The unique identifier for the version.
+
+        Returns:
+            Optional[Version]: A version object if found, otherwise None.
+        """
+        for versions in self._versions.values():
+            for version in versions:
+                if version.version_id == version_id:
+                    return version
+        return None
 
 
 # Global storage instance

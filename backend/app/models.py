@@ -52,18 +52,39 @@ class PromptUpdate(BaseModel):
     description: Optional[str] = Field(None, max_length=500)
     collection_id: Optional[str] = None
 
+
+# ============== Version Model ==============
+
+class Version(BaseModel):
+    """
+    Represents a version of a prompt.
+    Attributes:
+        version_id (str): Unique identifier for each version.
+        prompt_id (str): Identifier linking to the associated prompt.
+        content (str): The version's specific prompt content.
+        created_at (datetime): Timestamp indicating when the version was created.
+        change_summary (Optional[str]): Optional brief summary of changes.
+    """
+    version_id: str = Field(default_factory=generate_id)
+    prompt_id: str
+    content: str
+    created_at: datetime = Field(default_factory=get_current_time)
+    change_summary: Optional[str] = None
+
+
 class Prompt(PromptBase):
     """
-    Represents a detailed prompt model with an ID and timestamps.
-
+    Represents a detailed prompt model with an ID, timestamps, and the current version ID.
     Attributes:
         id (str): Unique identifier for the prompt.
         created_at (datetime): Timestamp when the prompt was created.
         updated_at (datetime): Timestamp when the prompt was last updated.
+        current_version_id (Optional[str]): Optional field to link to the current version of the prompt.
     """
     id: str = Field(default_factory=generate_id)
     created_at: datetime = Field(default_factory=get_current_time)
     updated_at: datetime = Field(default_factory=get_current_time)
+    current_version_id: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -74,7 +95,6 @@ class Prompt(PromptBase):
 class CollectionBase(BaseModel):
     """
     Represents the basic structure for a collection with necessary information.
-
     Attributes:
         name (str): The name of the collection, must be between 1 and 100 characters and is required.
         description (Optional[str]): An optional field that provides additional information about the collection, up to 500 characters.
@@ -90,7 +110,6 @@ class CollectionCreate(CollectionBase):
 class Collection(CollectionBase):
     """
     Represents a collection model with a unique ID and creation timestamp.
-
     Attributes:
         id (str): Unique identifier for the collection, automatically generated.
         created_at (datetime): Timestamp indicating when the collection was created, set to the current UTC time by default.
@@ -107,7 +126,6 @@ class Collection(CollectionBase):
 class PromptList(BaseModel):
     """
     Represents a response model containing a list of prompts.
-
     Attributes:
         prompts (List[Prompt]): A list of Prompt instances.
         total (int): Total number of prompts available.
