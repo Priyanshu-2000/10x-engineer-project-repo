@@ -25,7 +25,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest pytest-cov
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          echo "Installing from requirements.txt"
+          if [ ! -f requirements.txt ]; then echo "requirements.txt not found"; exit 1; fi
+          pip install -r requirements.txt
+          pip list  # Verify installations
 
       - name: Run linting
         run: |
