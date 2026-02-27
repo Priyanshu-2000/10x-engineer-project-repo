@@ -6,11 +6,11 @@ from datetime import datetime
 from app.models import (
     Prompt,
     Collection,
-    # Add additional models as needed
     PromptBase, PromptCreate, PromptUpdate,
     CollectionBase, CollectionCreate,
     PromptList, CollectionList, HealthResponse
 )
+
 
 def test_prompt_base_validation():
     # Valid prompt base
@@ -18,7 +18,7 @@ def test_prompt_base_validation():
     prompt = PromptBase(**prompt_data)
     assert prompt.title == 'Sample'
     assert prompt.content == 'Content'
-    
+
     # Invalid title (empty)
     with pytest.raises(ValidationError):
         PromptBase(title='', content='Content')
@@ -61,7 +61,7 @@ def test_collection_base_validation():
     collection_data = {'name': 'Collection Name'}
     collection = CollectionBase(**collection_data)
     assert collection.name == 'Collection Name'
-    
+
     # Invalid name (empty)
     with pytest.raises(ValidationError):
         CollectionBase(name='')
@@ -100,4 +100,3 @@ def test_health_response_model():
     health = HealthResponse(**health_data)
     assert health.status == 'healthy'
     assert health.version == '1.0.0'
-

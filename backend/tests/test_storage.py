@@ -1,6 +1,6 @@
 import pytest
-from app.storage import storage  # Adjusted import to match actual usage
-from app.models import Prompt, Collection  # Adjusted import to match actual usage
+from app.storage import storage
+from app.models import Prompt, Collection
 from datetime import datetime
 
 
@@ -10,7 +10,13 @@ def setup_function():
 
 
 def test_create_and_get_prompt():
-    prompt = Prompt(id='test1', title='Test', content='Content', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt = Prompt(
+        id='test1',
+        title='Test',
+        content='Content',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt)
 
     fetched_prompt = storage.get_prompt('test1')
@@ -21,8 +27,20 @@ def test_create_and_get_prompt():
 
 
 def test_get_all_prompts():
-    prompt1 = Prompt(id='test1', title='Test1', content='Content1', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
-    prompt2 = Prompt(id='test2', title='Test2', content='Content2', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt1 = Prompt(
+        id='test1',
+        title='Test1',
+        content='Content1',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    prompt2 = Prompt(
+        id='test2',
+        title='Test2',
+        content='Content2',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt1)
     storage.create_prompt(prompt2)
 
@@ -31,10 +49,22 @@ def test_get_all_prompts():
 
 
 def test_update_prompt():
-    prompt = Prompt(id='test1', title='Test', content='Content', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt = Prompt(
+        id='test1',
+        title='Test',
+        content='Content',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt)
 
-    updated = Prompt(id='test1', title='Updated Test', content='Updated Content', created_at=prompt.created_at, updated_at=datetime.utcnow())
+    updated = Prompt(
+        id='test1',
+        title='Updated Test',
+        content='Updated Content',
+        created_at=prompt.created_at,
+        updated_at=datetime.utcnow()
+    )
     storage.update_prompt('test1', updated)
 
     fetched_prompt = storage.get_prompt('test1')
@@ -45,7 +75,13 @@ def test_update_prompt():
 
 
 def test_delete_prompt():
-    prompt = Prompt(id='test1', title='Test', content='Content', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt = Prompt(
+        id='test1',
+        title='Test',
+        content='Content',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt)
 
     assert storage.delete_prompt('test1') is True
@@ -55,7 +91,11 @@ def test_delete_prompt():
 
 
 def test_create_and_get_collection():
-    collection = Collection(id='col1', name='Collection Name', created_at=datetime.utcnow())
+    collection = Collection(
+        id='col1',
+        name='Collection Name',
+        created_at=datetime.utcnow()
+    )
     storage.create_collection(collection)
 
     fetched_col = storage.get_collection('col1')
@@ -76,7 +116,11 @@ def test_get_all_collections():
 
 
 def test_delete_collection():
-    collection = Collection(id='col1', name='Collection Name', created_at=datetime.utcnow())
+    collection = Collection(
+        id='col1',
+        name='Collection Name',
+        created_at=datetime.utcnow()
+    )
     storage.create_collection(collection)
 
     assert storage.delete_collection('col1') is True
@@ -86,8 +130,22 @@ def test_delete_collection():
 
 
 def test_get_prompts_by_collection():
-    prompt1 = Prompt(id='test1', title='Test1', content='Content1', collection_id='col1', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
-    prompt2 = Prompt(id='test2', title='Test2', content='Content2', collection_id='col2', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt1 = Prompt(
+        id='test1',
+        title='Test1',
+        content='Content1',
+        collection_id='col1',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    prompt2 = Prompt(
+        id='test2',
+        title='Test2',
+        content='Content2',
+        collection_id='col2',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt1)
     storage.create_prompt(prompt2)
 
@@ -97,20 +155,36 @@ def test_get_prompts_by_collection():
 
 
 def test_disassociate_prompts_from_collection():
-    prompt = Prompt(id='test1', title='Test', content='Content', collection_id='col1', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
+    prompt = Prompt(
+        id='test1',
+        title='Test',
+        content='Content',
+        collection_id='col1',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt)
-    
+
     storage.disassociate_prompts_from_collection('col1')
     assert storage.get_prompt('test1').collection_id is None
 
 
 def test_clear_storage():
-    prompt = Prompt(id='test1', title='Test', content='Content', created_at=datetime.utcnow(), updated_at=datetime.utcnow())
-    collection = Collection(id='col1', name='Collection Name', created_at=datetime.utcnow())
+    prompt = Prompt(
+        id='test1',
+        title='Test',
+        content='Content',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    collection = Collection(
+        id='col1',
+        name='Collection Name',
+        created_at=datetime.utcnow()
+    )
     storage.create_prompt(prompt)
     storage.create_collection(collection)
 
     storage.clear()
     assert not storage.get_all_prompts()
     assert not storage.get_all_collections()
-

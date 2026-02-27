@@ -17,14 +17,17 @@ def get_current_time() -> datetime:
 # ============== Prompt Models ==============
 
 class PromptBase(BaseModel):
-    """
-    Represents the basic structure for a prompt with minimal required information.
+    """Represents the basic structure for a prompt.
 
     Attributes:
-        title (str): The title of the prompt, must be between 1 and 200 characters.
-        content (str): The main content of the prompt, requires at least 1 character.
-        description (Optional[str]): An optional field to add a brief description of the prompt, up to 500 characters.
-        collection_id (Optional[str]): An optional field that links the prompt to a collection, if provided.
+        title (str): The title of the prompt, must be between 1 and 200
+            characters.
+        content (str): The main content of the prompt, requires at least 1
+            character.
+        description (Optional[str]): An optional field to add a brief
+            description of the prompt, up to 500 characters.
+        collection_id (Optional[str]): An optional field that links the
+            prompt to a collection, if provided.
     """
     title: str = Field(..., min_length=1, max_length=200)
     content: str = Field(..., min_length=1)
@@ -36,16 +39,20 @@ class PromptCreate(PromptBase):
     pass
 
 
-# Updated PromptUpdate model with all fields as optional
 class PromptUpdate(BaseModel):
-    """
-    Represents an updated version of a prompt where all fields are optional.
+    """Represents an updated version of a prompt.
+
+    All fields are optional.
 
     Attributes:
-        title (Optional[str]): Optional title for the prompt, must be between 1 and 200 characters if provided.
-        content (Optional[str]): Optional main content for the prompt, requires at least 1 character if provided.
-        description (Optional[str]): Optional brief description of the prompt, up to 500 characters.
-        collection_id (Optional[str]): An optional field to link the prompt to a collection, if provided.
+        title (Optional[str]): Optional title for the prompt, must be between
+            1 and 200 characters if provided.
+        content (Optional[str]): Optional main content for the prompt,
+            requires at least 1 character if provided.
+        description (Optional[str]): Optional brief description of the
+            prompt, up to 500 characters.
+        collection_id (Optional[str]): An optional field to link the prompt
+            to a collection, if provided.
     """
     title: Optional[str] = Field(None, min_length=1, max_length=200)
     content: Optional[str] = Field(None, min_length=1)
@@ -56,13 +63,14 @@ class PromptUpdate(BaseModel):
 # ============== Version Model ==============
 
 class Version(BaseModel):
-    """
-    Represents a version of a prompt.
+    """Represents a version of a prompt.
+
     Attributes:
         version_id (str): Unique identifier for each version.
         prompt_id (str): Identifier linking to the associated prompt.
         content (str): The version's specific prompt content.
-        created_at (datetime): Timestamp indicating when the version was created.
+        created_at (datetime): Timestamp indicating when the version was
+            created.
         change_summary (Optional[str]): Optional brief summary of changes.
     """
     version_id: str = Field(default_factory=generate_id)
@@ -73,13 +81,14 @@ class Version(BaseModel):
 
 
 class Prompt(PromptBase):
-    """
-    Represents a detailed prompt model with an ID, timestamps, and the current version ID.
+    """Represents a detailed prompt model.
+
     Attributes:
         id (str): Unique identifier for the prompt.
         created_at (datetime): Timestamp when the prompt was created.
         updated_at (datetime): Timestamp when the prompt was last updated.
-        current_version_id (Optional[str]): Optional field to link to the current version of the prompt.
+        current_version_id (Optional[str]): Optional field to link to the
+            current version of the prompt.
     """
     id: str = Field(default_factory=generate_id)
     created_at: datetime = Field(default_factory=get_current_time)
@@ -93,11 +102,13 @@ class Prompt(PromptBase):
 # ============== Collection Models ==============
 
 class CollectionBase(BaseModel):
-    """
-    Represents the basic structure for a collection with necessary information.
+    """Represents the basic structure for a collection.
+
     Attributes:
-        name (str): The name of the collection, must be between 1 and 100 characters and is required.
-        description (Optional[str]): An optional field that provides additional information about the collection, up to 500 characters.
+        name (str): The name of the collection, must be between 1 and 100
+            characters and is required.
+        description (Optional[str]): An optional field that provides
+            additional information about the collection, up to 500 characters.
     """
     name: str = Field(..., min_length=1, max_length=100)
     description: Optional[str] = Field(None, max_length=500)
@@ -108,11 +119,13 @@ class CollectionCreate(CollectionBase):
 
 
 class Collection(CollectionBase):
-    """
-    Represents a collection model with a unique ID and creation timestamp.
+    """Represents a collection model with ID and timestamp.
+
     Attributes:
-        id (str): Unique identifier for the collection, automatically generated.
-        created_at (datetime): Timestamp indicating when the collection was created, set to the current UTC time by default.
+        id (str): Unique identifier for the collection, automatically
+            generated.
+        created_at (datetime): Timestamp indicating when the collection was
+            created, set to the current UTC time by default.
     """
     id: str = Field(default_factory=generate_id)
     created_at: datetime = Field(default_factory=get_current_time)
@@ -124,8 +137,8 @@ class Collection(CollectionBase):
 # ============== Response Models ==============
 
 class PromptList(BaseModel):
-    """
-    Represents a response model containing a list of prompts.
+    """Response model containing a list of prompts.
+
     Attributes:
         prompts (List[Prompt]): A list of Prompt instances.
         total (int): Total number of prompts available.
@@ -135,8 +148,7 @@ class PromptList(BaseModel):
 
 
 class CollectionList(BaseModel):
-    """
-    Represents a response model containing a list of collections.
+    """Response model containing a list of collections.
 
     Attributes:
         collections (List[Collection]): A list of Collection instances.
@@ -147,8 +159,7 @@ class CollectionList(BaseModel):
 
 
 class HealthResponse(BaseModel):
-    """
-    Represents the health status of the service.
+    """Represents the health status of the service.
 
     Attributes:
         status (str): Current status of the service.
@@ -156,4 +167,3 @@ class HealthResponse(BaseModel):
     """
     status: str
     version: str
-
