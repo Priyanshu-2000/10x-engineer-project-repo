@@ -35,6 +35,8 @@ jobs:
           flake8 .
 
       - name: Run tests with coverage
+        env:
+          PYTHONPATH: ./backend
         run: |
           pytest --cov=./ --cov-fail-under=80 --cov-report=term-missing
 
