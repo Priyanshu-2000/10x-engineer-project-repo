@@ -2,8 +2,8 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from backend.app.api import app
-from backend.app.storage import storage
+from app.api import app
+from app.storage import storage
 
 
 @pytest.fixture
