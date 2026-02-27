@@ -34,6 +34,11 @@ jobs:
         run: |
           flake8 .
 
+      - name: Debug paths
+        run: |
+          echo "Current directory structure:"
+          ls -R
+
       - name: Run tests with coverage
         env:
           PYTHONPATH: ${{ github.workspace }}/backend
