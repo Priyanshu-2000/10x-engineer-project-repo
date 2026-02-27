@@ -2,7 +2,7 @@
 
 from typing import List
 from app.models import Prompt
-from backend.app import storage
+from app import storage
 
 
 def sort_prompts_by_date(
