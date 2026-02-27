@@ -419,8 +419,6 @@ class TestCollections:
 
         prompt_data = {**sample_prompt_data, "collection_id": collection_id}
         prompt_response = client.post("/prompts", json=prompt_data)
-        prompt_id = prompt_response.json()["id"]
-
         client.delete(f"/collections/{collection_id}")
 
         prompts = client.get("/prompts").json()["prompts"]
@@ -515,3 +513,6 @@ class TestCollections:
 
         response = client.delete(f"/collections/{collection_id}")
         assert response.status_code == 404
+
+
+

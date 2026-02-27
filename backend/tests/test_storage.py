@@ -1,4 +1,3 @@
-import pytest
 from app.storage import storage
 from app.models import Prompt, Collection
 from datetime import datetime
@@ -188,3 +187,4 @@ def test_clear_storage():
     storage.clear()
     assert not storage.get_all_prompts()
     assert not storage.get_all_collections()
+
