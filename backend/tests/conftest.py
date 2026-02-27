@@ -5,10 +5,13 @@ from fastapi.testclient import TestClient
 from app.api import app
 from app.storage import storage
 
+
 @pytest.fixture
 def client():
     """Create a test client for the API."""
     return TestClient(app)
+
+
 
 @pytest.fixture(autouse=True)
 def clear_storage():
@@ -17,15 +20,20 @@ def clear_storage():
     yield
     storage.clear()
 
+
+
 @pytest.fixture
 def sample_prompt_data():
     """Sample prompt data for testing."""
     return {
         "title": "Code Review Prompt",
-        "content": "Review the following code and provide feedback:\n"  # broken into two lines to fit within limit
-               "\n{{code}}",
+        "content": (
+            "Review the following code and provide feedback:\n"
+            "\n{{code}}"
+        ),
         "description": "A prompt for AI code review"
     }
+
 
 @pytest.fixture
 def sample_collection_data():
@@ -34,6 +42,4 @@ def sample_collection_data():
         "name": "Development",
         "description": "Prompts for development tasks"
     }
-
-
 

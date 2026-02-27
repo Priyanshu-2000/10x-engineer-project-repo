@@ -187,4 +187,3 @@ def test_clear_storage():
     storage.clear()
     assert not storage.get_all_prompts()
     assert not storage.get_all_collections()
-

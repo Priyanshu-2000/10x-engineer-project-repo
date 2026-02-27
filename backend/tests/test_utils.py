@@ -147,4 +147,3 @@ def test_sort_prompts_by_date_with_identical_timestamps():
 
     ids_ordered = [p.id for p in sorted_prompts[:2]]
     assert ids_ordered == ['8', '9']
-

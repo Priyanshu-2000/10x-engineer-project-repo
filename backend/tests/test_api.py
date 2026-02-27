@@ -514,5 +514,3 @@ class TestCollections:
         response = client.delete(f"/collections/{collection_id}")
         assert response.status_code == 404
 
-
-
