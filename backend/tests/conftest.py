@@ -12,14 +12,12 @@ def client():
     return TestClient(app)
 
 
-
 @pytest.fixture(autouse=True)
 def clear_storage():
     """Clear storage before each test."""
     storage.clear()
     yield
     storage.clear()
-
 
 
 @pytest.fixture
@@ -42,4 +40,3 @@ def sample_collection_data():
         "name": "Development",
         "description": "Prompts for development tasks"
     }
-
