@@ -2,8 +2,8 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from app.api import app
-from app.storage import storage
+from backend.app.api import app
+from backend.app.storage import storage
 
 
 @pytest.fixture
@@ -40,3 +40,4 @@ def sample_collection_data():
         "name": "Development",
         "description": "Prompts for development tasks"
     }
+
