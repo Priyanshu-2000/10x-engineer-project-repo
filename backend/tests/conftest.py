@@ -40,4 +40,3 @@ def sample_collection_data():
         "name": "Development",
         "description": "Prompts for development tasks"
     }
-    
