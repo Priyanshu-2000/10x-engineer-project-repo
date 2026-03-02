@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000', // default base URL
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000', // default base URL
   headers: {
     'Content-Type': 'application/json',
     // Add other default headers here
@@ -31,6 +31,33 @@ export const getData = async (endpoint, params = {}, options = {}) => {
   }
 };
 
-// Add more functions for POST, PUT, DELETE, etc., following the pattern above.
+// Fetch all prompts
+export const getPrompts = async () => {
+  try {
+    const response = await apiClient.get("/prompts");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching prompts:", error);
+    throw error;
+  }
+};
 
-export default apiClient;
+// Fetch all collections
+export const getCollections = async () => {
+  try {
+    const response = await apiClient.get("/collections");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    throw error;
+  }
+};
+
+// Export the functions as part of an API service
+export default {
+  apiClient, // keep the default export for apiClient to maintain flexibility in imports
+  getData,
+  getPrompts,
+  getCollections,
+};
+

@@ -49,3 +49,15 @@ Thumbs.db
 *.tmp
 *.swp
 
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Python bytecode specific to the frontend directory
+frontend/__pycache__/
+frontend/**/*.pyc
+
+# Python bytecode specific to the backend directory
+backend/__pycache__/
+backend/**/*.pyc
+

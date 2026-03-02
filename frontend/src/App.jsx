@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import reactLogo from './assets/react.svg'; // Retain reactLogo for potential future use
+import viteLogo from '/vite.svg'; // Retain viteLogo as well
+import './App.css';
+import apiService from './services/apiService'; // Import the API service
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [prompts, setPrompts] = useState([]);
+  const [collections, setCollections] = useState([]);
+  // Fetch prompts and collections using API service
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedPrompts = await apiService.getPrompts();
+        console.log('Fetched Prompts:', fetchedPrompts); // This line was added in the suggested changes to log fetched prompts
+        setPrompts(fetchedPrompts.prompts);
+      } catch (error) {
+        console.error('Failed to fetch prompts:', error);
+      }
+
+      try {
+        const fetchedCollections = await apiService.getCollections();
+        console.log('Fetched Collections:', fetchedCollections); // This line was added in the suggested changes to log fetched collections
+        setCollections(fetchedCollections.collections);
+      } catch (error) {
+        console.error('Failed to fetch collections:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Simplified component structure to focus on what is shown on the Dashboard
+      <div className="App">
+      <h1>PromptLab Dashboard</h1>
+
+        <section>
+          <h2>Prompts</h2>
+          <ul>
+          {prompts.length ? (
+            prompts.map((prompt) => (
+              <li key={prompt.id}>{prompt.title}</li>
+            ))
+          ) : (
+            <li>No prompts available</li> // Fallback message
+          )}
+        </ul>
+      </section>
+
+        <section>
+          <h2>Collections</h2>
+          <ul>
+          {collections.length ? (
+            collections.map((collection) => (
+              <li key={collection.id}>{collection.name}</li>
+            ))
+          ) : (
+            <li>No collections available</li> // Fallback message
+          )}
+        </ul>
+      </section>
+    </div>
+  );
 }
 
-export default App
+export default App;
+
