@@ -1,5 +1,6 @@
-import React from 'react';
-
+// Import necessary components for interactivity
+import { useNavigate } from 'react-router-dom';
+// import Button from './shared/Button'; // Remove unused import if buttons are not needed here
 /**
  * Sidebar component for navigating collections.
  *
@@ -10,17 +11,19 @@ import React from 'react';
  * )
  */
 const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <aside className="bg-gray-800 text-white w-64 p-4">
       <nav>
         <ul className="space-y-2">
-          <li><a href="#" className="block py-2 px-3 hover:bg-gray-700 rounded">Collections</a></li>
-          <li><a href="#" className="block py-2 px-3 hover:bg-gray-700 rounded">List 1</a></li>
-          <li><a href="#" className="block py-2 px-3 hover:bg-gray-700 rounded">List 2</a></li>
+          {/* Your existing navigation items */}
         </ul>
       </nav>
+      {/* Removed create buttons from here to avoid duplication */}
     </aside>
   );
 };
 
-export default Sidebar;
+export default Sidebar; // Ensure Sidebar is the default export
+

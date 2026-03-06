@@ -1,37 +1,34 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-/**
- * Fetch wrapper to simplify API calls.
- *
- * @param {string} endpoint - API endpoint to be called.
- * @param {Object} options - Fetch options including method, headers, body, etc.
- * @returns {Promise<any>} - Promise resolving to the response data, or rejecting with an error.
- */
 async function fetchWrapper(endpoint, options = {}) {
-  const url = `${API_BASE_URL}${endpoint}`;
-
+  const url = `${API_BASE_URL.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
   };
 
   const config = {
-    method: 'GET',  // default method
+    method: 'GET',
     ...options,
     headers,
+    credentials: 'include',
   };
 
   try {
     const response = await fetch(url, config);
+
+    if (response.status === 401) {
+      throw new Error('Unauthorized: Please log in');
+    }
+
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'An error occurred');
+      throw new Error(data.message || `HTTP Error: ${response.status}`);
     }
 
     return data;
   } catch (error) {
-    // Log error or send to error tracking service
     console.error('API call error:', error);
     throw error;
   }

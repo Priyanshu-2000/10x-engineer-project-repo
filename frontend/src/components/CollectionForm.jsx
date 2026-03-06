@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
 import apiService from '../services/apiService';
+import { useNavigate } from 'react-router-dom';
 
-/**
- * Form component for creating new collections.
- *
- * @component
- * @prop {Function} props.onSuccess - Callback to execute after successful form submission.
- * @example
- * return (
- *   <CollectionForm onSuccess={() => {}} />
- * )
- */
 const CollectionForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
   });
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,8 +18,9 @@ const CollectionForm = ({ onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await apiService.post('/collections', formData);
+      await apiService.createCollection(formData);
       onSuccess();
+      navigate('/'); // Redirect to the default page after success
     } catch (error) {
       console.error('Error creating collection:', error);
     }

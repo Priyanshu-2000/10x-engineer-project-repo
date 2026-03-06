@@ -53,11 +53,47 @@ export const getCollections = async () => {
   }
 };
 
+// Create a new prompt
+export const createPrompt = async (promptData) => {
+  try {
+    const response = await apiClient.post('/prompts', promptData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating prompt:', error);
+    throw error;
+  }
+};
+
+// Update an existing prompt
+export const updatePrompt = async (promptId, promptData) => {
+  try {
+    const response = await apiClient.put(`/prompts/${promptId}`, promptData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating prompt:', error);
+    throw error;
+  }
+};
+
+// Create a new collection
+export const createCollection = async (collectionData) => {
+  try {
+    const response = await apiClient.post('/collections', collectionData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating collection:', error);
+    throw error;
+  }
+};
+
 // Export the functions as part of an API service
 export default {
   apiClient, // keep the default export for apiClient to maintain flexibility in imports
   getData,
   getPrompts,
   getCollections,
+  createPrompt,
+  updatePrompt,
+  createCollection,
 };
 

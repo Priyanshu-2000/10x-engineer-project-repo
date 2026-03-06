@@ -31,7 +31,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex=r"https://.*\.app\.github\.dev",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -396,3 +396,6 @@ def delete_collection(collection_id: str):
     storage.disassociate_prompts_from_collection(collection_id)
 
     return None
+
+
+

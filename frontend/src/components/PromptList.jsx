@@ -4,7 +4,10 @@ import { getPrompts } from '../api/prompts';
 import SearchBar from './shared/SearchBar';
 import { getCollections } from '../api/collections';
 import LoadingSpinner from './shared/LoadingSpinner';
-import ErrorMessage from './shared/ErrorMessage'; // Assuming you have an ErrorMessage component
+import ErrorMessage from './shared/ErrorMessage';
+import { useNavigate } from 'react-router-dom';
+import Modal from './shared/Modal'; // New import for Modal
+import PromptDetail from './PromptDetail'; // New import for PromptDetail
 
 /**
  * Component for displaying a list of prompts in grid format.
@@ -22,6 +25,15 @@ const PromptList = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCollection, setSelectedCollection] = useState('');
+
+  // State for toggling prompt visibility
+  const [isPromptListVisible, setPromptListVisible] = useState(false);
+
+  // State for selected prompt and modal visibility
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
+  const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,19 +60,28 @@ const PromptList = () => {
   );
 
   if (loading) {
-    return <LoadingSpinner />; // Utilize a spinner for loading state
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return <ErrorMessage message={error} />; // Display error message using ErrorMessage component
+    return <ErrorMessage message={error} />;
   }
 
   return (
     <div className="p-4">
-      {/* Search bar component to filter prompts */}
+      <h2 className="text-xl font-semibold mb-2" onClick={() => setPromptListVisible(!isPromptListVisible)}>
+        Prompts
+      </h2>
+      {isPromptListVisible && (
+        <>
+          <Button
+            label="Create Prompt"
+            onClick={() => navigate('/prompts/new')}
+            className="mb-4 bg-blue-600 hover:bg-blue-700 text-white"
+          />
+
       <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
 
-      {/* Dropdown to select collections for filtering prompts */}
       <select
         value={selectedCollection}
         onChange={(e) => setSelectedCollection(e.target.value)}
@@ -73,7 +94,6 @@ const PromptList = () => {
         ))}
       </select>
 
-      {/* Handle case where no prompts match the filters */}
       {filteredPrompts.length === 0 ? (
         <div className="text-center text-gray-500">
           No prompts available. Please create one or adjust your filters.
@@ -81,10 +101,23 @@ const PromptList = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredPrompts.map(prompt => (
-            <PromptCard key={prompt.id} prompt={prompt} />
+                <PromptCard
+                  key={prompt.id}
+                  prompt={prompt}
+                  onClick={() => {
+                    setSelectedPrompt(prompt);
+                    setDetailModalOpen(true);
+                  }}
+                />
           ))}
         </div>
       )}
+        </>
+      )}
+
+      <Modal isOpen={isDetailModalOpen} onClose={() => setDetailModalOpen(false)}>
+        {selectedPrompt && <PromptDetail prompt={selectedPrompt} />}
+      </Modal>
     </div>
   );
 };
