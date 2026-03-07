@@ -397,5 +397,3 @@ def delete_collection(collection_id: str):
 
     return None
 
-
-
