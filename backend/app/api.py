@@ -396,4 +396,3 @@ def delete_collection(collection_id: str):
     storage.disassociate_prompts_from_collection(collection_id)
 
     return None
-
