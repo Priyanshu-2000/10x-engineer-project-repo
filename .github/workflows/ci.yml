@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - Week3
+      - Week4
   pull_request:
     branches:
       - main
       - Week3
+      - Week4
 
 jobs:
   test:
