@@ -1,7 +1,15 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 async function fetchWrapper(endpoint, options = {}) {
-  const url = `${API_BASE_URL.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
+  // Carefully constructed URL without additional slashes
+  let url = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  url += endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  // Debugging logs for URL construction
+  console.log('VITE_API_BASE_URL:', API_BASE_URL);
+  console.log('Endpoint:', endpoint);
+  console.log('Constructed URL:', url);
+
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
@@ -21,10 +29,12 @@ async function fetchWrapper(endpoint, options = {}) {
       throw new Error('Unauthorized: Please log in');
     }
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    const hasJSONContent = contentType.includes('application/json');
+    const data = hasJSONContent ? await response.json() : null;
 
     if (!response.ok) {
-      throw new Error(data.message || `HTTP Error: ${response.status}`);
+      throw new Error(data ? data.message : `HTTP Error: ${response.status}`);
     }
 
     return data;

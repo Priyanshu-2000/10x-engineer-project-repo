@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Use useNavigate instead
+import { useParams, useNavigate } from 'react-router-dom';
 import { getPrompt, deletePrompt } from '../api/prompts';
-import apiService from '../services/apiService';  // Importing apiService for collection fetching
+import apiService from '../services/apiService';
 import Modal from './shared/Modal';
 import Button from './shared/Button';
 import LoadingSpinner from './shared/LoadingSpinner';
 import ErrorMessage from './shared/ErrorMessage';
 
-// Assume canEditPrompt is defined somewhere in your utilities
 const canEditPrompt = () => {
-  // Logic to determine if the user can edit the prompt
-  return true; // Replace with actual logic
+  return true;
 };
 
 const PromptDetail = () => {
-  const { id } = useParams(); // Use id which matches URL router parameter
-  const navigate = useNavigate(); // Initialize useNavigate
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [prompt, setPrompt] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [collections, setCollections] = useState([]); // State to store collections
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    // Fetch prompt details
     const fetchPrompt = async () => {
       try {
-        const data = await getPrompt(id); // Use 'id' matched from URL
+        const data = await getPrompt(id);
         setPrompt(data);
       } catch (err) {
         setError('Failed to load prompt.');
@@ -35,7 +32,6 @@ const PromptDetail = () => {
       }
     };
 
-    // Fetch collections for mapping collection_id to name
     const fetchCollections = async () => {
       try {
         const result = await apiService.getCollections();
@@ -45,12 +41,10 @@ const PromptDetail = () => {
       }
     };
 
-    // Concurrent fetching
     fetchPrompt();
     fetchCollections();
   }, [id]);
 
-  // Function to retrieve collection name by id
   const getCollectionName = (collectionId) => {
     const collection = collections.find(c => c.id === collectionId);
     return collection ? collection.name : 'Unknown Collection';
@@ -58,8 +52,13 @@ const PromptDetail = () => {
 
   const handleDelete = async () => {
     try {
-      await deletePrompt(id); // Use 'id' here as well
-      navigate('/');  // Redirect to home/dashboard after deletion
+      const response = await deletePrompt(id);
+      if (response.ok) { // Check if the request was successful
+        navigate('/');   // Navigate back to the list of prompts
+      } else {
+        const errorData = await response.json(); // Try parsing any error message
+        setError(errorData.message || 'Failed to delete prompt.');
+      }
     } catch (err) {
       setError('Failed to delete prompt.');
     }
@@ -79,17 +78,23 @@ const PromptDetail = () => {
 
   return (
     <div className="p-4">
+      <button
+        onClick={() => navigate('/')}
+        className="text-blue-500 hover:text-blue-700 mb-4 flex items-center"
+      >
+        &#x2190; {/* Using HTML entity for left arrow */}
+      </button>
       <h1 className="text-2xl font-bold mb-4">{prompt.title}</h1>
       <p className="text-gray-700 mb-4">{prompt.content}</p>
       {prompt.collection_id && (
         <p className="text-gray-700 mb-4">
-          Collection: {getCollectionName(prompt.collection_id)} {/* Render section for collection */}
+          Collection: {getCollectionName(prompt.collection_id)}
         </p>
       )}
       {canEditPrompt() && (
       <Button
         label="Edit Prompt"
-        onClick={() => navigate(`/edit/${id}`)} // Use 'id' here for navigation
+        onClick={() => navigate(`/edit/${id}`)}
         className="bg-yellow-500 hover:bg-yellow-600 mr-2"
       />
       )}
@@ -111,3 +116,4 @@ const PromptDetail = () => {
 };
 
 export default PromptDetail;
+
