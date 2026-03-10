@@ -85,8 +85,8 @@ function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="card p-6">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-primary-100">
-                      <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="p-3 rounded-full bg-blue-100">
+                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
@@ -99,8 +99,8 @@ function App() {
 
                 <div className="card p-6">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-success-100">
-                      <svg className="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="p-3 rounded-full bg-green-100">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                       </svg>
                     </div>
@@ -113,8 +113,8 @@ function App() {
 
                 <div className="card p-6">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-warning-100">
-                      <svg className="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="p-3 rounded-full bg-yellow-100">
+                      <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
@@ -173,7 +173,7 @@ function App() {
                         <Link
                           key={prompt.id}
                           to={`/prompts/${prompt.id}`}
-                          className="block p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-all duration-200"
+                          className="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
                         >
                           <h3 className="font-medium text-gray-900 truncate">{prompt.title}</h3>
                           <p className="text-sm text-gray-600 truncate mt-1">
@@ -225,10 +225,10 @@ function App() {
                         <Link
                           key={collection.id}
                           to={`/collections/${collection.id}`}
-                          className="block p-3 rounded-lg border border-gray-200 hover:border-success-300 hover:bg-success-50 transition-all duration-200"
+                          className="block p-3 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-200"
                         >
                           <div className="flex items-center">
-                            <svg className="w-5 h-5 text-success-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                             <div>
