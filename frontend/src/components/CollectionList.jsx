@@ -41,28 +41,27 @@ const CollectionList = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Collections</h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                {collections.length} collection{collections.length !== 1 ? 's' : ''}
-              </p>
-            </div>
-            <Button
-              label="Create Collection"
-              onClick={() => navigate('/collections/new')}
-              variant="primary"
-              icon={
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              }
-            />
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <div className="mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Collections</h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              {collections.length} collection{collections.length !== 1 ? 's' : ''}
+            </p>
           </div>
+          <Button
+            label="Create Collection"
+            onClick={() => navigate('/collections/new')}
+            variant="primary"
+            icon={
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            }
+          />
         </div>
+      </div>
 
         {collections.length === 0 ? (
           <div className="text-center py-12">

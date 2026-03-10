@@ -42,6 +42,17 @@ export const getPrompts = async () => {
   }
 };
 
+// Fetch a single prompt by ID
+export const getPrompt = async (promptId) => {
+  try {
+    const response = await apiClient.get(`/prompts/${promptId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching prompt:", error);
+    throw error;
+  }
+};
+
 // Fetch all collections
 export const getCollections = async () => {
   try {
@@ -49,6 +60,17 @@ export const getCollections = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching collections:", error);
+    throw error;
+  }
+};
+
+// Fetch a single collection by ID
+export const getCollection = async (collectionId) => {
+  try {
+    const response = await apiClient.get(`/collections/${collectionId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching collection:", error);
     throw error;
   }
 };
@@ -91,7 +113,9 @@ export default {
   apiClient, // keep the default export for apiClient to maintain flexibility in imports
   getData,
   getPrompts,
+  getPrompt,
   getCollections,
+  getCollection,
   createPrompt,
   updatePrompt,
   createCollection,

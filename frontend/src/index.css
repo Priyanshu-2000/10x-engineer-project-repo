@@ -250,6 +250,26 @@ html body {
     color: #f9fafb !important;
   }
 
+  /* Fix dashboard hover states specifically */
+  .dark .hover\\:bg-blue-50:hover h3,
+  .dark .hover\\:bg-blue-50:hover p {
+    color: #f9fafb !important;
+  }
+
+  .dark .hover\\:bg-green-50:hover h3,
+  .dark .hover\\:bg-green-50:hover p {
+    color: #f9fafb !important;
+  }
+
+  /* Fix dark mode background for blue and green hover states */
+  .dark .hover\\:bg-blue-900\\/20:hover {
+    background-color: rgba(30, 58, 138, 0.3) !important;
+  }
+
+  .dark .hover\\:bg-green-900\\/20:hover {
+    background-color: rgba(20, 83, 45, 0.3) !important;
+  }
+
   /* Ensure text visibility in dark mode */
   .dark .text-gray-900 {
     color: #f9fafb !important;
