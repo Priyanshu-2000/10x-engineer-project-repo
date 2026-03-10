@@ -7,7 +7,6 @@ import LoadingSpinner from './shared/LoadingSpinner';
 import ErrorMessage from './shared/ErrorMessage';
 import Button from './shared/Button';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../contexts/ThemeContext';
 
 /**
  * Enhanced component for displaying a list of prompts in a modern grid layout.
@@ -27,7 +26,6 @@ const PromptList = () => {
   const [selectedCollection, setSelectedCollection] = useState('');
 
   const navigate = useNavigate();
-  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,14 +77,7 @@ const PromptList = () => {
 
   if (loading) {
     return (
-      <div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
-        style={{
-          backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-          color: isDarkMode ? '#f9fafb' : '#111827',
-          minHeight: '100vh'
-        }}
-      >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <LoadingSpinner size="lg" text="Loading prompts..." />
       </div>
     );
@@ -94,14 +85,7 @@ const PromptList = () => {
 
   if (error) {
     return (
-      <div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
-        style={{
-          backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-          color: isDarkMode ? '#f9fafb' : '#111827',
-          minHeight: '100vh'
-        }}
-      >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ErrorMessage 
           message={error}
           variant="error"
@@ -121,13 +105,7 @@ const PromptList = () => {
   }
 
   return (
-    <div 
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
-      style={{
-        backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-        color: isDarkMode ? '#f9fafb' : '#111827'
-      }}
-    >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import apiService from '../services/apiService';
 import Button from './shared/Button';
 import LoadingSpinner from './shared/LoadingSpinner';
-import { useTheme } from '../contexts/ThemeContext';
 
 /**
  * Component for displaying a list of collections.
@@ -18,7 +17,6 @@ const CollectionList = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -36,26 +34,14 @@ const CollectionList = () => {
 
   if (loading) {
     return (
-      <div 
-        className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center"
-        style={{
-          backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-          color: isDarkMode ? '#f9fafb' : '#111827'
-        }}
-      >
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading collections..." />
       </div>
     );
   }
 
   return (
-    <div 
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
-      style={{
-        backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-        color: isDarkMode ? '#f9fafb' : '#111827'
-      }}
-    >
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">

@@ -237,14 +237,61 @@ html body {
   /* Fix hover states that turn white */
   .dark .hover\\:bg-blue-50:hover {
     background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #f9fafb !important;
   }
 
   .dark .hover\\:bg-green-50:hover {
     background-color: rgba(34, 197, 94, 0.1) !important;
+    color: #f9fafb !important;
   }
 
   .dark .hover\\:bg-gray-50:hover {
     background-color: rgba(75, 85, 99, 0.2) !important;
+    color: #f9fafb !important;
+  }
+
+  /* Ensure text visibility in dark mode */
+  .dark .text-gray-900 {
+    color: #f9fafb !important;
+  }
+
+  .dark .text-gray-600 {
+    color: #d1d5db !important;
+  }
+
+  .dark .text-gray-500 {
+    color: #9ca3af !important;
+  }
+
+  /* Fix header logo and navigation text */
+  .dark header .text-gray-900 {
+    color: #f9fafb !important;
+  }
+
+  .dark header span {
+    color: #f9fafb !important;
+  }
+
+  /* Fix dashboard stats cards text */
+  .dark .card .text-2xl {
+    color: #f9fafb !important;
+  }
+
+  .dark .card .text-sm {
+    color: #d1d5db !important;
+  }
+
+  /* Fix link hover states */
+  .dark a:hover {
+    color: #f9fafb !important;
+  }
+
+  .dark a:hover h3 {
+    color: #f9fafb !important;
+  }
+
+  .dark a:hover p {
+    color: #d1d5db !important;
   }
 
   .input {
