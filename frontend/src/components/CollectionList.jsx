@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import apiService from '../services/apiService';
 import Button from './shared/Button';
-import Modal from './shared/Modal';
 import LoadingSpinner from './shared/LoadingSpinner';
-import CollectionDetail from './CollectionDetail';
+import { useTheme } from '../contexts/ThemeContext';
 
 /**
  * Component for displaying a list of collections.
@@ -17,8 +17,8 @@ import CollectionDetail from './CollectionDetail';
 const CollectionList = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCollection, setSelectedCollection] = useState(null);
-  const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -36,14 +36,26 @@ const CollectionList = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div 
+        className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center"
+        style={{
+          backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
+          color: isDarkMode ? '#f9fafb' : '#111827'
+        }}
+      >
         <LoadingSpinner size="lg" text="Loading collections..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div 
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      style={{
+        backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
+        color: isDarkMode ? '#f9fafb' : '#111827'
+      }}
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -55,7 +67,7 @@ const CollectionList = () => {
             </div>
             <Button
               label="Create Collection"
-              onClick={() => console.log('Navigate to Create Collection Form')}
+              onClick={() => navigate('/collections/new')}
               variant="primary"
               icon={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +90,7 @@ const CollectionList = () => {
               </p>
               <Button
                 label="Create Your First Collection"
-                onClick={() => console.log('Navigate to Create Collection Form')}
+                onClick={() => navigate('/collections/new')}
                 variant="primary"
                 icon={
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +106,10 @@ const CollectionList = () => {
               <div
                 key={collection.id}
                 className="card card-hover cursor-pointer group"
-                onClick={() => { setSelectedCollection(collection); setDetailModalOpen(true); }}
+                onClick={() => {
+                  console.log('Navigating to collection:', collection.id);
+                  navigate(`/collections/${collection.id}`);
+                }}
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
@@ -120,10 +135,6 @@ const CollectionList = () => {
             ))}
           </div>
         )}
-
-        <Modal isOpen={isDetailModalOpen} onClose={() => setDetailModalOpen(false)} size="2xl">
-          {selectedCollection && <CollectionDetail collection={selectedCollection} />}
-        </Modal>
       </div>
     </div>
   );
