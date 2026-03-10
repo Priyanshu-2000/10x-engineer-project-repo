@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PromptCard from './PromptCard';
 import { getPrompts } from '../api/prompts';
 import SearchBar from './shared/SearchBar';
 import { getCollections } from '../api/collections';
@@ -195,11 +194,26 @@ const PromptList = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPrompts.map(prompt => (
-            <PromptCard
+            <div
               key={prompt.id}
-              prompt={prompt}
               onClick={() => handlePromptClick(prompt)}
-            />
+              className="card card-hover cursor-pointer group"
+            >
+              <div className="p-6">
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 mb-3">
+                  {prompt.title || 'Untitled Prompt'}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                  {prompt.content ? (prompt.content.length > 120 ? `${prompt.content.substring(0, 120)}...` : prompt.content) : 'No content available'}
+                </p>
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                  <span>View details</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       )}
