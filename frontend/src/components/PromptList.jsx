@@ -5,12 +5,13 @@ import SearchBar from './shared/SearchBar';
 import { getCollections } from '../api/collections';
 import LoadingSpinner from './shared/LoadingSpinner';
 import ErrorMessage from './shared/ErrorMessage';
+import Button from './shared/Button';
 import { useNavigate } from 'react-router-dom';
-import Modal from './shared/Modal'; // New import for Modal
-import PromptDetail from './PromptDetail'; // New import for PromptDetail
+import Modal from './shared/Modal';
+import PromptDetail from './PromptDetail';
 
 /**
- * Component for displaying a list of prompts in grid format.
+ * Enhanced component for displaying a list of prompts in a modern grid layout.
  *
  * @component
  * @example
@@ -25,11 +26,6 @@ const PromptList = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCollection, setSelectedCollection] = useState('');
-
-  // State for toggling prompt visibility
-  const [isPromptListVisible, setPromptListVisible] = useState(false);
-
-  // State for selected prompt and modal visibility
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
 
@@ -38,13 +34,12 @@ const PromptList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetching both prompts and collections data concurrently using Promise.all
         const [promptsResponse, collectionsResponse] = await Promise.all([
           getPrompts(),
           getCollections(),
         ]);
-        setPrompts(promptsResponse.prompts || []); // Default to empty array if no prompts
-        setCollections(collectionsResponse.collections || []); // Default to empty array if no collections
+        setPrompts(promptsResponse.prompts || []);
+        setCollections(collectionsResponse.collections || []);
       } catch (err) {
         setError('Failed to load data. Please try again later.');
       } finally {
@@ -59,63 +54,211 @@ const PromptList = () => {
     prompt.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handlePromptClick = (prompt) => {
+    setSelectedPrompt(prompt);
+    setDetailModalOpen(true);
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    setLoading(true);
+    // Re-fetch data
+    const fetchData = async () => {
+      try {
+        const [promptsResponse, collectionsResponse] = await Promise.all([
+          getPrompts(),
+          getCollections(),
+        ]);
+        setPrompts(promptsResponse.prompts || []);
+        setCollections(collectionsResponse.collections || []);
+      } catch (err) {
+        setError('Failed to load data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  };
+
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <LoadingSpinner size="lg" text="Loading prompts..." />
+      </div>
+    );
   }
 
   if (error) {
-    return <ErrorMessage message={error} />;
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ErrorMessage 
+          message={error}
+          variant="error"
+          dismissible
+          onDismiss={() => setError(null)}
+          action={
+            <Button
+              label="Try Again"
+              onClick={handleRetry}
+              variant="danger"
+              size="sm"
+            />
+          }
+        />
+      </div>
+    );
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-2" onClick={() => setPromptListVisible(!isPromptListVisible)}>
-        Prompts
-      </h2>
-      {isPromptListVisible && (
-        <>
-          <Button
-            label="Create Prompt"
-            onClick={() => navigate('/prompts/new')}
-            className="mb-4 bg-blue-600 hover:bg-blue-700 text-white"
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">All Prompts</h1>
+            <p className="text-gray-600">
+              {filteredPrompts.length} of {prompts.length} prompts
+            </p>
+          </div>
+          <div className="mt-4 sm:mt-0">
+            <Button
+              label="Create New Prompt"
+              onClick={() => navigate('/prompts/new')}
+              variant="primary"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              }
+            />
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <SearchBar 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search prompts by title..."
+            onClear={() => setSearchTerm('')}
           />
 
-      <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <select
+            value={selectedCollection}
+            onChange={(e) => setSelectedCollection(e.target.value)}
+            className="select"
+            aria-label="Filter by Collection"
+          >
+            <option value="">All Collections</option>
+            {collections.map(collection => (
+              <option key={collection.id} value={collection.id}>
+                {collection.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <select
-        value={selectedCollection}
-        onChange={(e) => setSelectedCollection(e.target.value)}
-        className="mb-4 border border-gray-300 rounded py-2 px-3"
-        aria-label="Select Collection"
-      >
-        <option value="">All Collections</option>
-        {collections.map(collection => (
-          <option key={collection.id} value={collection.id}>{collection.name}</option>
-        ))}
-      </select>
+        {/* Active Filters */}
+        {(searchTerm || selectedCollection) && (
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <span className="text-sm text-gray-600">Active filters:</span>
+            {searchTerm && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-800">
+                Search: "{searchTerm}"
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="ml-2 text-primary-600 hover:text-primary-800"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </span>
+            )}
+            {selectedCollection && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-success-100 text-success-800">
+                Collection: {collections.find(c => c.id === selectedCollection)?.name}
+                <button
+                  onClick={() => setSelectedCollection('')}
+                  className="ml-2 text-success-600 hover:text-success-800"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedCollection('');
+              }}
+              className="text-sm text-gray-500 hover:text-gray-700 underline"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
+      </div>
 
+      {/* Content */}
       {filteredPrompts.length === 0 ? (
-        <div className="text-center text-gray-500">
-          No prompts available. Please create one or adjust your filters.
+        <div className="text-center py-12">
+          <div className="card max-w-md mx-auto p-8">
+            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {searchTerm || selectedCollection ? 'No prompts match your filters' : 'No prompts available'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {searchTerm || selectedCollection 
+                ? 'Try adjusting your search terms or filters to find what you\'re looking for.'
+                : 'Create your first prompt to get started with PromptLab.'
+              }
+            </p>
+            {searchTerm || selectedCollection ? (
+              <Button
+                label="Clear Filters"
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCollection('');
+                }}
+                variant="secondary"
+              />
+            ) : (
+              <Button
+                label="Create Your First Prompt"
+                onClick={() => navigate('/prompts/new')}
+                variant="primary"
+                icon={
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                }
+              />
+            )}
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPrompts.map(prompt => (
-                <PromptCard
-                  key={prompt.id}
-                  prompt={prompt}
-                  onClick={() => {
-                    setSelectedPrompt(prompt);
-                    setDetailModalOpen(true);
-                  }}
-                />
+            <PromptCard
+              key={prompt.id}
+              prompt={prompt}
+              onClick={() => handlePromptClick(prompt)}
+            />
           ))}
         </div>
       )}
-        </>
-      )}
 
-      <Modal isOpen={isDetailModalOpen} onClose={() => setDetailModalOpen(false)}>
+      {/* Modal for prompt details */}
+      <Modal 
+        isOpen={isDetailModalOpen} 
+        onClose={() => setDetailModalOpen(false)}
+        title={selectedPrompt?.title}
+        size="2xl"
+      >
         {selectedPrompt && <PromptDetail prompt={selectedPrompt} />}
       </Modal>
     </div>
