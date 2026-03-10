@@ -78,61 +78,76 @@ const PromptForm = ({ initialData = {}, onSuccess }) => {
   };
 
   return (
-    <div className="new-prompt-form">
-      <h2 className="text-2xl font-bold mb-4">New Prompt</h2>
-    <form className="space-y-4 max-w-lg mx-auto" onSubmit={handleSubmit}>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Title</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          aria-invalid={errors.title ? 'true' : 'false'}
-        />
-        {errors.title && <div className="text-red-600 text-sm">{errors.title}</div>}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="card p-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            {initialData.id ? 'Edit Prompt' : 'New Prompt'}
+          </h2>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                className="input"
+                aria-invalid={errors.title ? 'true' : 'false'}
+                placeholder="Enter prompt title..."
+              />
+              {errors.title && <div className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.title}</div>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+              <textarea
+                name="content"
+                value={formData.content}
+                onChange={handleInputChange}
+                rows={8}
+                className="input resize-none"
+                aria-invalid={errors.content ? 'true' : 'false'}
+                placeholder="Enter prompt content..."
+              />
+              {errors.content && <div className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.content}</div>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Collection</label>
+              <select
+                name="collection_id"
+                value={formData.collection_id}
+                onChange={handleInputChange}
+                className="select"
+                aria-invalid={errors.collection_id ? 'true' : 'false'}
+              >
+                <option value="">Select a collection</option>
+                {collections.map((collection) => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+              {errors.collection_id && <div className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.collection_id}</div>}
+            </div>
+            {submitError && <ErrorMessage message={submitError} />}
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                label="Cancel"
+                onClick={() => navigate(-1)}
+                variant="secondary"
+              />
+              <Button
+                type="submit"
+                label={loading ? 'Saving...' : (initialData.id ? 'Update Prompt' : 'Create Prompt')}
+                variant="primary"
+                disabled={loading}
+                icon={loading ? <LoadingSpinner size="sm" /> : null}
+              />
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Content</label>
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleInputChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          aria-invalid={errors.content ? 'true' : 'false'}
-        />
-        {errors.content && <div className="text-red-600 text-sm">{errors.content}</div>}
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Collection</label>
-        <select
-          name="collection_id"
-          value={formData.collection_id}
-          onChange={handleInputChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          aria-invalid={errors.collection_id ? 'true' : 'false'}
-        >
-          <option value="">Select a collection</option>
-          {collections.map((collection) => (
-            <option key={collection.id} value={collection.id}>
-              {collection.name}
-            </option>
-          ))}
-        </select>
-        {errors.collection_id && <div className="text-red-600 text-sm">{errors.collection_id}</div>}
-      </div>
-      {submitError && <ErrorMessage message={submitError} />}
-      <div className="flex justify-end">
-        <Button
-          type="submit"
-          label={initialData.id ? 'Update Prompt' : 'Create Prompt'}
-          className="bg-blue-600 hover:bg-blue-700"
-          disabled={loading}
-        />
-      </div>
-      {loading && <LoadingSpinner />}
-    </form>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
+import { ThemeProvider } from './contexts/ThemeContext';
 import apiService from './services/apiService';
 import PromptForm from './components/PromptForm';
 import PromptList from './components/PromptList';
@@ -23,6 +24,7 @@ function App() {
   const [error, setError] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,14 +59,14 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <ErrorMessage message={error} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <Header />
       
       <div className="flex">
@@ -75,54 +77,40 @@ function App() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Dashboard Header */}
               <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   Welcome to PromptLab
                 </h1>
-                <p className="text-lg text-gray-600">
+                <p className="text-lg text-gray-600 dark:text-gray-300">
                   Manage and organize your AI prompts efficiently
                 </p>
               </div>
 
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="card p-6">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-blue-100">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
+                      <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">Total Prompts</p>
-                      <p className="text-2xl font-semibold text-gray-900">{prompts.length}</p>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Prompts</p>
+                      <p className="text-2xl font-semibold text-gray-900 dark:text-white">{prompts.length}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="card p-6">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-green-100">
-                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="p-3 rounded-full bg-green-100 dark:bg-green-900">
+                      <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">Collections</p>
-                      <p className="text-2xl font-semibold text-gray-900">{collections.length}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card p-6">
-                  <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-purple-100">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">Recent Activity</p>
-                      <p className="text-2xl font-semibold text-gray-900">{prompts.length > 0 ? 'Active' : 'None'}</p>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Collections</p>
+                      <p className="text-2xl font-semibold text-gray-900 dark:text-white">{collections.length}</p>
                     </div>
                   </div>
                 </div>
@@ -133,10 +121,10 @@ function App() {
                 {/* Prompts Section */}
                 <div className="card p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900">Recent Prompts</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Prompts</h2>
                     <Button
                       label="View All"
-                      onClick={() => (window.location.href = '/prompts')}
+                      onClick={() => navigate('/prompts')}
                       variant="secondary"
                       size="sm"
                     />
@@ -145,7 +133,7 @@ function App() {
                   <div className="mb-4">
                     <Button
                       label="Create New Prompt"
-                      onClick={() => (window.location.href = '/prompts/new')}
+                      onClick={() => navigate('/prompts/new')}
                       variant="primary"
                       className="w-full"
                       icon={
@@ -175,17 +163,17 @@ function App() {
                         <Link
                           key={prompt.id}
                           to={`/prompts/${prompt.id}`}
-                          className="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
+                          className="block p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
                         >
-                          <h3 className="font-medium text-gray-900 truncate">{prompt.title}</h3>
-                          <p className="text-sm text-gray-600 truncate mt-1">
+                          <h3 className="font-medium text-gray-900 dark:text-white truncate">{prompt.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 truncate mt-1">
                             {prompt.content?.substring(0, 100)}...
                           </p>
                         </Link>
                       ))
                     ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         <p>No prompts available</p>
@@ -198,10 +186,10 @@ function App() {
                 {/* Collections Section */}
                 <div className="card p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900">Collections</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Collections</h2>
                     <Button
                       label="View All"
-                      onClick={() => (window.location.href = '/collections')}
+                      onClick={() => navigate('/collections')}
                       variant="secondary"
                       size="sm"
                     />
@@ -210,7 +198,7 @@ function App() {
                   <div className="mb-4">
                     <Button
                       label="Create New Collection"
-                      onClick={() => (window.location.href = '/collections/new')}
+                      onClick={() => navigate('/collections/new')}
                       variant="success"
                       className="w-full"
                       icon={
@@ -227,15 +215,15 @@ function App() {
                         <Link
                           key={collection.id}
                           to={`/collections/${collection.id}`}
-                          className="block p-3 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-200"
+                          className="block p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200"
                         >
                           <div className="flex items-center">
-                            <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                             <div>
-                              <h3 className="font-medium text-gray-900">{collection.name}</h3>
-                              <p className="text-sm text-gray-600">
+                              <h3 className="font-medium text-gray-900 dark:text-white">{collection.name}</h3>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {collection.description?.substring(0, 60)}...
                               </p>
                             </div>
@@ -243,8 +231,8 @@ function App() {
                         </Link>
                       ))
                     ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                         <p>No collections available</p>
@@ -272,5 +260,13 @@ function App() {
   );
 }
 
-export default App;
+function AppWithTheme() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+}
+
+export default AppWithTheme;
 

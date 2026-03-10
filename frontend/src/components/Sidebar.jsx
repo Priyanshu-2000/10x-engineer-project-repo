@@ -63,7 +63,7 @@ const Sidebar = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
         </svg>
       ),
-      color: 'text-blue-600 hover:text-blue-700 hover:bg-blue-50',
+      color: 'text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/20',
     },
     {
       name: 'New Collection',
@@ -73,7 +73,7 @@ const Sidebar = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
       ),
-      color: 'text-green-600 hover:text-green-700 hover:bg-green-50',
+      color: 'text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/20',
     },
   ];
 
@@ -86,18 +86,18 @@ const Sidebar = () => {
 
   return (
     <aside className={`
-      bg-white border-r border-gray-200 h-screen sticky top-0 transition-all duration-300 ease-in-out
+      bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-screen sticky top-0 transition-all duration-300 ease-in-out
       ${isCollapsed ? 'w-16' : 'w-64'}
     `}>
       <div className="flex flex-col h-full">
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           {!isCollapsed && (
-            <h2 className="text-lg font-semibold text-gray-900">Navigation</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Navigation</h2>
           )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+            className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
           >
             <svg 
               className={`w-5 h-5 transition-transform duration-200 ${isCollapsed ? 'rotate-180' : ''}`} 
@@ -119,14 +119,14 @@ const Sidebar = () => {
               className={`
                 group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
                 ${isActive(item.href)
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-400'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
                 }
               `}
             >
               <span className={`
                 flex-shrink-0 transition-colors duration-200
-                ${isActive(item.href) ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}
+                ${isActive(item.href) ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'}
               `}>
                 {item.icon}
               </span>
@@ -139,7 +139,7 @@ const Sidebar = () => {
           {/* Quick Actions */}
           {!isCollapsed && (
             <div className="pt-6">
-              <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <h3 className="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Quick Actions
               </h3>
               <div className="mt-2 space-y-1">
@@ -166,18 +166,18 @@ const Sidebar = () => {
           {!isCollapsed && (
             <div className="pt-6">
               <div className="flex items-center justify-between px-3 mb-2">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Collections
                 </h3>
                 {collections.length > 0 && (
-                  <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full">
                     {collections.length}
                   </span>
                 )}
               </div>
-              <div className="space-y-1 max-h-64 overflow-y-auto">
+              <div className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
                 {loading ? (
-                  <div className="px-3 py-2 text-sm text-gray-500">Loading...</div>
+                  <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">Loading...</div>
                 ) : collections.length > 0 ? (
                   collections.map((collection) => (
                     <Link
@@ -186,19 +186,19 @@ const Sidebar = () => {
                       className={`
                         group flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200
                         ${isActive(`/collections/${collection.id}`)
-                          ? 'bg-gray-50 text-gray-700'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                          ? 'bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-200'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
                         }
                       `}
                     >
-                      <svg className="w-4 h-4 flex-shrink-0 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 flex-shrink-0 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                       </svg>
                       <span className="ml-3 truncate">{collection.name}</span>
                     </Link>
                   ))
                 ) : (
-                  <div className="px-3 py-2 text-sm text-gray-500">
+                  <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
                     No collections yet
                   </div>
                 )}
@@ -208,9 +208,9 @@ const Sidebar = () => {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="border-t border-gray-200 p-3">
+        <div className="border-t border-gray-200 dark:border-gray-700 p-3">
           {!isCollapsed && (
-            <div className="text-xs text-gray-500 text-center">
+            <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
               PromptLab v1.0
             </div>
           )}

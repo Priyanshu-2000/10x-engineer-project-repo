@@ -53,43 +53,58 @@ const CollectionForm = ({ initialData = {}, onSuccess }) => {
   };
 
   return (
-    <div className="new-collection-form">
-      <h2 className="text-2xl font-bold mb-4">New Collection</h2> {/* Add heading */}
-      <form className="space-y-4 max-w-lg mx-auto" onSubmit={handleSubmit}>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            aria-invalid={errors.name ? 'true' : 'false'}
-          />
-          {errors.name && <div className="text-red-600 text-sm">{errors.name}</div>}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="card p-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            {initialData.id ? 'Edit Collection' : 'New Collection'}
+          </h2>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="input"
+                aria-invalid={errors.name ? 'true' : 'false'}
+                placeholder="Enter collection name..."
+              />
+              {errors.name && <div className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.name}</div>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows={4}
+                className="input resize-none"
+                aria-invalid={errors.description ? 'true' : 'false'}
+                placeholder="Enter collection description..."
+              />
+              {errors.description && <div className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.description}</div>}
+            </div>
+            {submitError && <ErrorMessage message={submitError} />}
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button
+                type="button"
+                label="Cancel"
+                onClick={() => navigate(-1)}
+                variant="secondary"
+              />
+              <Button
+                type="submit"
+                label={loading ? 'Saving...' : (initialData.id ? 'Update Collection' : 'Create Collection')}
+                variant="primary"
+                disabled={loading}
+                icon={loading ? <LoadingSpinner size="sm" /> : null}
+              />
+            </div>
+          </form>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            aria-invalid={errors.description ? 'true' : 'false'}
-          />
-          {errors.description && <div className="text-red-600 text-sm">{errors.description}</div>}
-        </div>
-        {submitError && <ErrorMessage message={submitError} />}
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            label="Create Collection"
-            className="bg-blue-600 hover:bg-blue-700"
-            disabled={loading}
-          />
-        </div>
-        {loading && <LoadingSpinner />}
-      </form>
+      </div>
     </div>
   );
 };
