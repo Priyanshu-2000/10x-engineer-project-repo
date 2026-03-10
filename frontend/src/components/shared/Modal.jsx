@@ -103,7 +103,7 @@ const Modal = ({
     >
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 bg-gray-900 dark:bg-black bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm transition-opacity duration-300"
         onClick={handleOverlayClick}
       />
       
@@ -114,21 +114,21 @@ const Modal = ({
           tabIndex={-1}
           className={`
             relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-xl 
-            bg-white shadow-large transition-all duration-300 animate-slide-up
+            bg-white dark:bg-gray-800 shadow-large transition-all duration-300 animate-slide-up
           `}
         >
           {/* Header */}
           {(title || showCloseButton) && (
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-600">
               {title && (
-                <h3 id="modal-title" className="text-lg font-semibold text-gray-900">
+                <h3 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-white">
                   {title}
                 </h3>
               )}
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="rounded-md p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="rounded-md p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                   aria-label="Close modal"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

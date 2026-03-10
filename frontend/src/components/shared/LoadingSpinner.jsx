@@ -29,24 +29,24 @@ const LoadingSpinner = ({
   };
 
   const colorClasses = {
-    blue: 'border-blue-600',
-    gray: 'border-gray-600',
-    green: 'border-green-600',
-    yellow: 'border-yellow-600',
-    red: 'border-red-600'
+    blue: 'border-blue-600 dark:border-blue-400',
+    gray: 'border-gray-600 dark:border-gray-400',
+    green: 'border-green-600 dark:border-green-400',
+    yellow: 'border-yellow-600 dark:border-yellow-400',
+    red: 'border-red-600 dark:border-red-400'
   };
 
   const spinnerElement = (
     <div className="flex flex-col items-center justify-center space-y-3">
       <div
         className={`
-          animate-spin rounded-full border-2 border-gray-200 border-t-2
+          animate-spin rounded-full border-2 border-gray-200 dark:border-gray-600 border-t-2
           ${sizeClasses[size]} 
           ${colorClasses[color]}
         `}
       />
       {text && (
-        <p className="text-sm text-gray-600 font-medium animate-pulse">
+        <p className="text-sm text-gray-600 dark:text-gray-300 font-medium animate-pulse">
           {text}
         </p>
       )}
@@ -55,7 +55,7 @@ const LoadingSpinner = ({
 
   if (overlay) {
     return (
-      <div className="fixed inset-0 bg-white bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
         {spinnerElement}
       </div>
     );

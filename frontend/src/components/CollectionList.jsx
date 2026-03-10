@@ -23,8 +23,8 @@ const CollectionList = () => {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await apiService.get('/collections');
-        setCollections(response.data.collections);
+        const response = await apiService.getCollections();
+        setCollections(response.collections || []);
       } catch (error) {
         console.error('Error fetching collections:', error);
       } finally {

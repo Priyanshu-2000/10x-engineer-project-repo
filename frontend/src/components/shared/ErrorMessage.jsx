@@ -34,31 +34,31 @@ const ErrorMessage = ({
 }) => {
   const variants = {
     error: {
-      container: 'bg-red-50 border-red-200',
-      icon: 'text-red-400',
-      title: 'text-red-800',
-      message: 'text-red-700',
+      container: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+      icon: 'text-red-400 dark:text-red-400',
+      title: 'text-red-800 dark:text-red-200',
+      message: 'text-red-700 dark:text-red-300',
       iconPath: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'
     },
     warning: {
-      container: 'bg-yellow-50 border-yellow-200',
-      icon: 'text-yellow-400',
-      title: 'text-yellow-800',
-      message: 'text-yellow-700',
+      container: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
+      icon: 'text-yellow-400 dark:text-yellow-400',
+      title: 'text-yellow-800 dark:text-yellow-200',
+      message: 'text-yellow-700 dark:text-yellow-300',
       iconPath: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'
     },
     info: {
-      container: 'bg-blue-50 border-blue-200',
-      icon: 'text-blue-400',
-      title: 'text-blue-800',
-      message: 'text-blue-700',
+      container: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
+      icon: 'text-blue-400 dark:text-blue-400',
+      title: 'text-blue-800 dark:text-blue-200',
+      message: 'text-blue-700 dark:text-blue-300',
       iconPath: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
     },
     success: {
-      container: 'bg-green-50 border-green-200',
-      icon: 'text-green-400',
-      title: 'text-green-800',
-      message: 'text-green-700',
+      container: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+      icon: 'text-green-400 dark:text-green-400',
+      title: 'text-green-800 dark:text-green-200',
+      message: 'text-green-700 dark:text-green-300',
       iconPath: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
     }
   };
@@ -121,7 +121,7 @@ const ErrorMessage = ({
                 className={`
                   inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${currentVariant.icon} hover:bg-opacity-20 hover:bg-current
-                  focus:ring-offset-${variant}-50 focus:ring-${variant}-600
+                  focus:ring-offset-${variant}-50 focus:ring-${variant}-600 dark:focus:ring-offset-gray-800
                 `}
                 aria-label="Dismiss"
               >

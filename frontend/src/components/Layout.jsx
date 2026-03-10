@@ -15,11 +15,11 @@ import Sidebar from './Sidebar';
  */
 const Layout = ({ children }) => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <main className="overflow-auto">
+        <main className="overflow-auto bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
           {children}
         </main>
       </div>
