@@ -116,19 +116,19 @@ const PromptList = () => {
                 {filteredPrompts.length} of {prompts.length} prompts
               </p>
             </div>
-          <div className="mt-4 sm:mt-0">
-            <Button
-              label="Create New Prompt"
-              onClick={() => navigate('/prompts/new')}
-              variant="primary"
-              icon={
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              }
-            />
+            <div className="mt-4 sm:mt-0">
+              <Button
+                label="Create New Prompt"
+                onClick={() => navigate('/prompts/new')}
+                variant="primary"
+                icon={
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                }
+              />
+            </div>
           </div>
-        </div>
 
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -195,9 +195,9 @@ const PromptList = () => {
             </button>
           </div>
         )}
-      </div>
+        </div>
 
-      {/* Content */}
+        {/* Content */}
       {filteredPrompts.length === 0 ? (
         <div className="text-center py-12">
           <div className="card max-w-md mx-auto p-8">
