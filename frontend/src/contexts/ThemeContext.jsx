@@ -24,16 +24,26 @@ export const ThemeProvider = ({ children }) => {
     // Save to localStorage
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     
-    // Apply dark class to document
+    // Apply dark class to document root
+    const root = document.documentElement;
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      // Also apply to body for better coverage
+      document.body.classList.add('dark');
+      console.log('Dark mode enabled - classes applied to html and body');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      document.body.classList.remove('dark');
+      console.log('Light mode enabled - dark classes removed');
     }
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
+    setIsDarkMode(prev => {
+      const newMode = !prev;
+      console.log('Toggling dark mode to:', newMode);
+      return newMode;
+    });
   };
 
   return (

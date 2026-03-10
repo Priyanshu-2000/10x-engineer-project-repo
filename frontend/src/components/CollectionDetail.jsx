@@ -16,12 +16,16 @@ const CollectionDetail = () => {
   useEffect(() => {
     const fetchCollection = async () => {
       try {
-        const collectionData = await apiService.getData(`/collections/${id}`);
-        setCollection(collectionData);
+        // Use the correct API methods
+        const collectionsResponse = await apiService.getCollections();
+        const collection = collectionsResponse.collections.find(c => c.id === parseInt(id));
+        setCollection(collection);
 
-        const promptData = await apiService.getData(`/prompts?collection_id=${id}`);
-        setPrompts(promptData.prompts);
+        const promptsResponse = await apiService.getPrompts();
+        const collectionPrompts = promptsResponse.prompts.filter(p => p.collection_id === parseInt(id));
+        setPrompts(collectionPrompts);
       } catch (err) {
+        console.error('Error fetching collection details:', err);
         setError('Error loading collection details and associated prompts');
       } finally {
         setLoading(false);
