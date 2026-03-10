@@ -16,9 +16,20 @@ const CollectionDetail = () => {
   useEffect(() => {
     const fetchCollection = async () => {
       try {
-        // Use the correct API methods
-        const collectionsResponse = await apiService.getCollections();
-        const collection = collectionsResponse.collections.find(c => c.id.toString() === id);
+        console.log('Fetching collection with ID:', id);
+        
+        // Try to get specific collection first
+        let collection;
+        try {
+          collection = await apiService.getData(`/collections/${id}`);
+          console.log('Fetched specific collection:', collection);
+        } catch (specificError) {
+          console.log('Specific collection API failed, falling back to list method');
+          // Fallback to getting all collections and filtering
+          const collectionsResponse = await apiService.getCollections();
+          collection = collectionsResponse.collections.find(c => c.id.toString() === id);
+          console.log('Found collection from list:', collection);
+        }
         
         if (!collection) {
           setError('Collection not found');
@@ -28,8 +39,20 @@ const CollectionDetail = () => {
         
         setCollection(collection);
 
-        const promptsResponse = await apiService.getPrompts();
-        const collectionPrompts = promptsResponse.prompts.filter(p => p.collection_id.toString() === id);
+        // Get prompts for this collection
+        let collectionPrompts = [];
+        try {
+          const promptData = await apiService.getData(`/prompts?collection_id=${id}`);
+          collectionPrompts = promptData.prompts || [];
+          console.log('Fetched collection prompts:', collectionPrompts);
+        } catch (promptError) {
+          console.log('Collection prompts API failed, falling back to list method');
+          // Fallback to getting all prompts and filtering
+          const promptsResponse = await apiService.getPrompts();
+          collectionPrompts = promptsResponse.prompts.filter(p => p.collection_id.toString() === id);
+          console.log('Filtered prompts from list:', collectionPrompts);
+        }
+        
         setPrompts(collectionPrompts);
       } catch (err) {
         console.error('Error fetching collection details:', err);

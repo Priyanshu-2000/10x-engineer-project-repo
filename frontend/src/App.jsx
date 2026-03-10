@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import apiService from './services/apiService';
 import PromptForm from './components/PromptForm';
 import PromptList from './components/PromptList';
@@ -25,6 +25,24 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
+
+  // Force apply dark mode styles
+  useEffect(() => {
+    const rootStyle = {
+      backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
+      color: isDarkMode ? '#f9fafb' : '#111827',
+      minHeight: '100vh'
+    };
+    
+    Object.assign(document.body.style, rootStyle);
+    Object.assign(document.documentElement.style, rootStyle);
+    
+    const rootDiv = document.getElementById('root');
+    if (rootDiv) {
+      Object.assign(rootDiv.style, rootStyle);
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,13 +84,26 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div 
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      style={{
+        backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
+        color: isDarkMode ? '#f9fafb' : '#111827',
+        minHeight: '100vh'
+      }}
+    >
       <Header />
       
       <div className="flex">
         {!isDetailView && <Sidebar />}
         
-        <main className={`flex-1 ${!isDetailView ? 'ml-0' : ''}`}>
+        <main 
+          className={`flex-1 ${!isDetailView ? 'ml-0' : ''}`}
+          style={{
+            backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
+            color: isDarkMode ? '#f9fafb' : '#111827'
+          }}
+        >
           {isDashboard && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Dashboard Header */}
