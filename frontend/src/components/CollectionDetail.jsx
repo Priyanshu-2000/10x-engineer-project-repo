@@ -18,11 +18,18 @@ const CollectionDetail = () => {
       try {
         // Use the correct API methods
         const collectionsResponse = await apiService.getCollections();
-        const collection = collectionsResponse.collections.find(c => c.id === parseInt(id));
+        const collection = collectionsResponse.collections.find(c => c.id.toString() === id);
+        
+        if (!collection) {
+          setError('Collection not found');
+          setLoading(false);
+          return;
+        }
+        
         setCollection(collection);
 
         const promptsResponse = await apiService.getPrompts();
-        const collectionPrompts = promptsResponse.prompts.filter(p => p.collection_id === parseInt(id));
+        const collectionPrompts = promptsResponse.prompts.filter(p => p.collection_id.toString() === id);
         setPrompts(collectionPrompts);
       } catch (err) {
         console.error('Error fetching collection details:', err);

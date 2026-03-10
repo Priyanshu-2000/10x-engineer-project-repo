@@ -24,17 +24,38 @@ export const ThemeProvider = ({ children }) => {
     // Save to localStorage
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     
-    // Apply dark class to document root
+    // Apply dark class to document root with more aggressive approach
     const root = document.documentElement;
+    const body = document.body;
+    const rootDiv = document.getElementById('root');
+    
     if (isDarkMode) {
       root.classList.add('dark');
-      // Also apply to body for better coverage
-      document.body.classList.add('dark');
-      console.log('Dark mode enabled - classes applied to html and body');
+      body.classList.add('dark');
+      if (rootDiv) rootDiv.classList.add('dark');
+      
+      // Force style attributes as backup
+      root.style.colorScheme = 'dark';
+      root.style.backgroundColor = '#111827';
+      body.style.backgroundColor = '#111827';
+      body.style.color = '#f9fafb';
+      
+      console.log('Dark mode enabled - classes applied to html, body, and root');
+      console.log('HTML classes:', root.className);
+      console.log('Body classes:', body.className);
     } else {
       root.classList.remove('dark');
-      document.body.classList.remove('dark');
+      body.classList.remove('dark');
+      if (rootDiv) rootDiv.classList.remove('dark');
+      
+      root.style.colorScheme = 'light';
+      root.style.backgroundColor = '#f9fafb';
+      body.style.backgroundColor = '#f9fafb';
+      body.style.color = '#111827';
+      
       console.log('Light mode enabled - dark classes removed');
+      console.log('HTML classes:', root.className);
+      console.log('Body classes:', body.className);
     }
   }, [isDarkMode]);
 
