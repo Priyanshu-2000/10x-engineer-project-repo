@@ -66,10 +66,16 @@ function App() {
   );
 
   const isDetailView =
-    /^\/prompts\/.+$/.test(location.pathname) ||
-    /^\/collections\/.+$/.test(location.pathname);
+    /^\/prompts\/\d+$/.test(location.pathname) ||
+    /^\/collections\/\d+$/.test(location.pathname) ||
+    /^\/edit\/\d+$/.test(location.pathname);
 
   const isDashboard = location.pathname === '/';
+
+  // Debug logging
+  console.log('Current pathname:', location.pathname);
+  console.log('isDetailView:', isDetailView);
+  console.log('isDashboard:', isDashboard);
 
   if (loading) {
     return <LoadingSpinner overlay text="Loading PromptLab..." />;
@@ -101,7 +107,8 @@ function App() {
           className={`flex-1 ${!isDetailView ? 'ml-0' : ''}`}
           style={{
             backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-            color: isDarkMode ? '#f9fafb' : '#111827'
+            color: isDarkMode ? '#f9fafb' : '#111827',
+            minHeight: '100vh'
           }}
         >
           {isDashboard && (
