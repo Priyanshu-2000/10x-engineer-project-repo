@@ -63,7 +63,7 @@ const Sidebar = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
         </svg>
       ),
-      color: 'text-primary-600 hover:text-primary-700 hover:bg-primary-50',
+      color: 'text-blue-600 hover:text-blue-700 hover:bg-blue-50',
     },
     {
       name: 'New Collection',
@@ -73,7 +73,7 @@ const Sidebar = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
       ),
-      color: 'text-success-600 hover:text-success-700 hover:bg-success-50',
+      color: 'text-green-600 hover:text-green-700 hover:bg-green-50',
     },
   ];
 
@@ -119,14 +119,14 @@ const Sidebar = () => {
               className={`
                 group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
                 ${isActive(item.href)
-                  ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600'
+                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }
               `}
             >
               <span className={`
                 flex-shrink-0 transition-colors duration-200
-                ${isActive(item.href) ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'}
+                ${isActive(item.href) ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}
               `}>
                 {item.icon}
               </span>
@@ -186,7 +186,7 @@ const Sidebar = () => {
                       className={`
                         group flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200
                         ${isActive(`/collections/${collection.id}`)
-                          ? 'bg-secondary-50 text-secondary-700'
+                          ? 'bg-gray-50 text-gray-700'
                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                         }
                       `}

@@ -46,12 +46,12 @@ const PromptCard = ({ prompt, onClick }) => {
         <div className="p-6">
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
-            <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary-600 transition-colors duration-200 line-clamp-2">
+            <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
               {prompt.title || 'Untitled Prompt'}
             </h3>
             <div className="flex-shrink-0 ml-2">
               <svg 
-                className="w-5 h-5 text-gray-400 group-hover:text-primary-500 transition-colors duration-200" 
+                className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -72,7 +72,7 @@ const PromptCard = ({ prompt, onClick }) => {
               {prompt.tags.slice(0, 3).map((tag, index) => (
                 <span 
                   key={index}
-                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                 >
                   {tag}
                 </span>
@@ -117,7 +117,7 @@ const PromptCard = ({ prompt, onClick }) => {
         </div>
 
         {/* Hover Effect Indicator */}
-        <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary-200 rounded-xl transition-colors duration-200 pointer-events-none" />
+        <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-200 rounded-xl transition-colors duration-200 pointer-events-none" />
       </div>
 
       {/* Modal for prompt details */}

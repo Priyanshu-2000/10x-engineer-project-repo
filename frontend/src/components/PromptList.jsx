@@ -163,11 +163,11 @@ const PromptList = () => {
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <span className="text-sm text-gray-600">Active filters:</span>
             {searchTerm && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
                 Search: "{searchTerm}"
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="ml-2 text-primary-600 hover:text-primary-800"
+                  className="ml-2 text-blue-600 hover:text-blue-800"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -176,11 +176,11 @@ const PromptList = () => {
               </span>
             )}
             {selectedCollection && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-success-100 text-success-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
                 Collection: {collections.find(c => c.id === selectedCollection)?.name}
                 <button
                   onClick={() => setSelectedCollection('')}
-                  className="ml-2 text-success-600 hover:text-success-800"
+                  className="ml-2 text-green-600 hover:text-green-800"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -72,7 +72,7 @@ const SearchBar = ({
     <div className="relative">
       <div className={`
         relative flex items-center
-        ${isFocused ? 'ring-2 ring-primary-500 ring-opacity-50' : ''}
+        ${isFocused ? 'ring-2 ring-blue-500 ring-opacity-50' : ''}
         transition-all duration-200
       `}>
         {/* Search Icon */}
@@ -100,10 +100,10 @@ const SearchBar = ({
           onBlur={() => setIsFocused(false)}
           className={`
             w-full pl-10 pr-10 border border-gray-300 rounded-lg
-            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
             transition-all duration-200 bg-white
             ${sizeClasses[size]}
-            ${isFocused ? 'shadow-medium' : 'shadow-soft'}
+            ${isFocused ? 'shadow-md' : 'shadow-sm'}
           `}
           placeholder={placeholder}
         />

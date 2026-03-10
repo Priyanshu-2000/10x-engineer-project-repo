@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  * @component
  * @param {Object} props - Properties passed to component
  * @param {string} [props.size='md'] - Size of the spinner (sm, md, lg, xl).
- * @param {string} [props.color='primary'] - Color variant of the spinner.
+ * @param {string} [props.color='blue'] - Color variant of the spinner.
  * @param {string} [props.text] - Optional loading text to display.
  * @param {boolean} [props.overlay=false] - Whether to show as full-screen overlay.
  * @example
@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  */
 const LoadingSpinner = ({ 
   size = 'md', 
-  color = 'primary', 
+  color = 'blue', 
   text,
   overlay = false 
 }) => {
@@ -29,11 +29,11 @@ const LoadingSpinner = ({
   };
 
   const colorClasses = {
-    primary: 'border-primary-600',
-    secondary: 'border-secondary-600',
-    success: 'border-success-600',
-    warning: 'border-warning-600',
-    danger: 'border-danger-600'
+    blue: 'border-blue-600',
+    gray: 'border-gray-600',
+    green: 'border-green-600',
+    yellow: 'border-yellow-600',
+    red: 'border-red-600'
   };
 
   const spinnerElement = (
@@ -70,7 +70,7 @@ const LoadingSpinner = ({
 
 LoadingSpinner.propTypes = {
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl']),
-  color: PropTypes.oneOf(['primary', 'secondary', 'success', 'warning', 'danger']),
+  color: PropTypes.oneOf(['blue', 'gray', 'green', 'yellow', 'red']),
   text: PropTypes.string,
   overlay: PropTypes.bool,
 };
