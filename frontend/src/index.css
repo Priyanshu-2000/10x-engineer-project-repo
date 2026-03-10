@@ -20,7 +20,7 @@ html body {
 
 /* Force all main containers to inherit proper colors */
 .dark * {
-  color: inherit !important;
+  border-color: #374151 !important;
 }
 
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
@@ -45,6 +45,19 @@ html body {
 }
 
 .dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+/* Force card text visibility */
+.dark .card h3 {
+  color: #f9fafb !important;
+}
+
+.dark .card p {
+  color: #d1d5db !important;
+}
+
+.dark .card span {
   color: #9ca3af !important;
 }
 

@@ -27,20 +27,14 @@ function App() {
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
 
-  // Force apply dark mode styles
+  // Apply dark mode classes to document
   useEffect(() => {
-    const rootStyle = {
-      backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-      color: isDarkMode ? '#f9fafb' : '#111827',
-      minHeight: '100vh'
-    };
-    
-    Object.assign(document.body.style, rootStyle);
-    Object.assign(document.documentElement.style, rootStyle);
-    
-    const rootDiv = document.getElementById('root');
-    if (rootDiv) {
-      Object.assign(rootDiv.style, rootStyle);
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
     }
   }, [isDarkMode]);
 
@@ -92,25 +86,13 @@ function App() {
   return (
     <div 
       className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
-      style={{
-        backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-        color: isDarkMode ? '#f9fafb' : '#111827',
-        minHeight: '100vh'
-      }}
     >
       <Header />
       
       <div className="flex">
         {!isDetailView && <Sidebar />}
         
-        <main 
-          className={`flex-1 ${!isDetailView ? 'ml-0' : ''}`}
-          style={{
-            backgroundColor: isDarkMode ? '#111827' : '#f9fafb',
-            color: isDarkMode ? '#f9fafb' : '#111827',
-            minHeight: '100vh'
-          }}
-        >
+        <main className={`flex-1 ${!isDetailView ? 'ml-0' : ''} bg-gray-50 dark:bg-gray-900 min-h-screen`}>
           {isDashboard && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {/* Dashboard Header */}
